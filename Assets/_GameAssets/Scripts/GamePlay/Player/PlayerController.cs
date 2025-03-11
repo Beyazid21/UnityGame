@@ -16,10 +16,13 @@ public class PlayerController : MonoBehaviour
    [SerializeField] private float _jumpForce;
    [SerializeField] private bool _canJump=true;
    [SerializeField] private float _jumpCooldown;
+   [SerializeField] private float _airMultiplayer;
+   [SerializeField] private float _airDrag;
+
 
    [Header("SlidingSettings")]
    [SerializeField] private KeyCode _slideKey;
-   [SerializeField] private float _slideMultipluier;
+   [SerializeField] private float _slideMultiplayer;
     [SerializeField] private float _slideDrag;
    
    [Header("Ground Check Settings")]
@@ -27,7 +30,7 @@ public class PlayerController : MonoBehaviour
   [SerializeField] private LayerMask _groundLayer;
   [SerializeField] private float _groundDrag;
 
- 
+  private StateController _stateController;
    private Rigidbody _playerRigidbody;
    private float _horizontalInput,_verticalInput;
    private bool _isSliding;
@@ -40,6 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         _playerRigidbody=GetComponent<Rigidbody>();
         _playerRigidbody.freezeRotation=true;
+        _stateController=GetComponent<StateController>();
         
         
         
@@ -47,6 +51,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         SetInputs();
+        SetState();
         SetPlayerDrag();
         LimitPlayerSpeed();
     }
@@ -65,7 +70,7 @@ public class PlayerController : MonoBehaviour
     }
     else if(Input.GetKeyDown(_movementKey))
     {
-
+     _isSliding=false;
 
     }
    else if(Input.GetKey(_jumpKey)  && _canJump && IsGrounded()){
@@ -80,33 +85,29 @@ public class PlayerController : MonoBehaviour
     private void SetPlayerMovement(){
         _movementDirection=_orientationTransform.forward*_verticalInput + _orientationTransform.right*_horizontalInput;
         
-
-        if(_isSliding)
-        {
-          _playerRigidbody.AddForce(_movementDirection.normalized*_movementSpeed*_slideMultipluier,ForceMode.Force);
-        }
-
-        else
-        {
-
-          _playerRigidbody.AddForce(_movementDirection.normalized*_movementSpeed,ForceMode.Force);
-        }
+       float forceMultipler=_stateController.GetCurrentState() switch
+       {
+            PlayerState.Idle=>1f,
+            PlayerState.Slide=>_slideMultiplayer,
+            PlayerState.Jump=>_airMultiplayer,
+            _=>1f
+       };
+         _playerRigidbody.AddForce(_movementDirection.normalized*_movementSpeed*forceMultipler,ForceMode.Force);
     }
 
 
     private void SetPlayerDrag()
     {
 
-        if(_isSliding)
-        {
-              _playerRigidbody.linearDamping=_slideDrag;
-        }
+          _playerRigidbody.linearDamping= _stateController.GetCurrentState()  switch
+          {
+            PlayerState.Move=>_groundDrag,
+            PlayerState.Slide=>_slideDrag,
+            PlayerState.Jump=>_airDrag,
 
-        else 
-        {
-            _playerRigidbody.linearDamping=_groundDrag;
-        }
-   
+            _=>_playerRigidbody.linearDamping
+          };
+       
 
     }
    private void  LimitPlayerSpeed()
@@ -134,5 +135,38 @@ public class PlayerController : MonoBehaviour
 private bool IsGrounded(){
     return Physics.Raycast(transform.position,Vector3.down,_playerHeight*0.5f+0.2f,_groundLayer);
 
+}
+
+private void SetState()
+{
+  Vector3 movementDirection=GetMovmentDirection();
+  bool isGrounded =IsGrounded();
+
+  PlayerState currentState=_stateController.GetCurrentState();
+
+  var newState=currentState switch
+  {
+    _ when movementDirection==Vector3.zero && isGrounded && !_isSliding=>PlayerState.Idle,
+    _ when movementDirection!=Vector3.zero && isGrounded && !_isSliding=>PlayerState.Move, 
+    _ when movementDirection!=Vector3.zero && isGrounded && _isSliding=>PlayerState.Slide,
+     _ when movementDirection==Vector3.zero && isGrounded && _isSliding=>PlayerState.SlideIdle, 
+     _ when !_canJump && !isGrounded=>PlayerState.Jump,
+     _ =>currentState
+
+  };
+     if(newState!=currentState)
+     {
+        _stateController.ChangeState(newState);
+     }
+      
+
+
+
+}
+
+
+private Vector3 GetMovmentDirection()
+{
+    return _movementDirection.normalized;
 }
 }
