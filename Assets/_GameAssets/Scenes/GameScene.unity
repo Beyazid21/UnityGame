@@ -349,7 +349,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10003171, y: 0, z: 0, w: 0.99498427}
-  m_LocalPosition: {x: 0, y: 1.276, z: -9}
+  m_LocalPosition: {x: 0, y: 1.3499999, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -831,6 +831,7 @@ GameObject:
   - component: {fileID: 729295744}
   - component: {fileID: 729295743}
   - component: {fileID: 729295746}
+  - component: {fileID: 729295748}
   - component: {fileID: 729295747}
   m_Layer: 0
   m_Name: Player
@@ -861,7 +862,7 @@ CapsuleCollider:
   m_Radius: 0.23
   m_Height: 0.85
   m_Direction: 1
-  m_Center: {x: -0.015, y: -0.04, z: 0}
+  m_Center: {x: 0.015, y: -0.04, z: 0}
 --- !u!54 &729295744
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -898,7 +899,7 @@ Transform:
   m_GameObject: {fileID: 729295742}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.074, z: -6}
+  m_LocalPosition: {x: 0, y: 0, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -928,7 +929,7 @@ MonoBehaviour:
   _airMultiplayer: 0.2
   _airDrag: 0.75
   _slideKey: 101
-  _slideMultiplayer: 0
+  _slideMultiplayer: 2
   _slideDrag: 2
   _playerHeight: 1
   _groundLayer:
@@ -947,6 +948,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12d706f2ebd66404cbc184ea9f473b37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &729295748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 729295742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1496410258135274f94faa34f01b5c46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerAnimator: {fileID: 4482711169233915991}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,7 +1430,7 @@ Transform:
   m_GameObject: {fileID: 1684235658}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: -6}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 10, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1544,7 +1558,7 @@ GameObject:
   - component: {fileID: 1722844173}
   - component: {fileID: 1722844172}
   m_Layer: 0
-  m_Name: 'RightWheel '
+  m_Name: RightWheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1647,7 +1661,7 @@ Transform:
   m_GameObject: {fileID: 1773287417}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10003171, y: 0, z: 0, w: 0.99498427}
-  m_LocalPosition: {x: 0, y: 1.276, z: -9}
+  m_LocalPosition: {x: 0, y: 1.3499999, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2205,7 +2219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 589833997861935882}
   m_Layer: 0
-  m_Name: root
+  m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2220,6 +2234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4482711169233915990}
+  - component: {fileID: 4482711169233915991}
   m_Layer: 0
   m_Name: PlayerVisual
   m_TagString: Untagged
@@ -2305,6 +2320,28 @@ Transform:
   - {fileID: 1722844171}
   m_Father: {fileID: 729295745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &4482711169233915991
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3854547615277206252}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0f4d84c15e5637f459f5b80cd4203531, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &4793271859182747848
 Transform:
   m_ObjectHideFlags: 0
