@@ -10,4 +10,12 @@ public class Consts
             public const string Is_Sliding_Active="IsSlidingActive";
             
     }
+
+    public struct WheatTypes
+    {
+        public const string Gold_Wheat="GoldWheat";
+        public const string Holy_Wheat="HolyWheat";
+        public const string Rotten_Wheat="RottenWheat";
+        
+    }
 }
